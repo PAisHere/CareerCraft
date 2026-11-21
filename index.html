@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta name="description" content="整理经历，制作一页简历，为目标岗位准备投递材料。">
+  <meta name="color-scheme" content="light">
+  <title>CareerCraft · 求职工作台</title>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="icons.js"></script>
+  <script defer src="device.js"></script>
+  <script defer src="assistant.js"></script>
+  <script defer src="material-reader.js"></script>
+  <script defer src="material-organizer.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+<div id="cc-proto" data-mobile="content" aria-label="CareerCraft 求职工作台">
+ <header class="ff-header"></header><main class="ff-screen"></main>
+ <div class="cc-app">
+  <header class="cc-top"><div class="cc-brand"><span class="cc-logo" aria-hidden="true">C</span>CareerCraft<span class="cc-demo">示例</span></div><nav class="cc-tabs" aria-label="简历版本"><button type="button" data-mode="base" aria-selected="true">通用简历</button><button type="button" data-mode="jd" aria-selected="false">JD 定制</button></nav></header>
+  <div class="cc-toolbar"><div class="cc-title"><select class="cc-role" aria-label="岗位大类"><option>产品经理</option><option>投行</option><option>算法</option></select><span class="cc-small cc-version">通用版</span></div><div class="cc-actions"><button type="button" class="cc-button cc-square cc-undo" aria-label="撤销" title="撤销 · ⌘Z"><i data-lucide="undo-2" aria-hidden="true"></i></button><button type="button" class="cc-button cc-library"><i data-lucide="folder" aria-hidden="true"></i>资料库</button><button type="button" class="cc-button cc-main cc-export"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i><span class="cc-export-label">导出预览</span></button></div><nav class="cc-tabs cc-mobile-tabs" aria-label="编辑视图"><button type="button" data-mobile="content" aria-selected="true">内容</button><button type="button" data-mobile="preview" aria-selected="false">预览</button></nav></div>
+  <div class="ca-tools"><button type="button" class="cc-button" data-ca-report><i data-lucide="list-checks" aria-hidden="true"></i>JD 匹配报告</button><button type="button" class="cc-button" data-ca-diagnosis><i data-lucide="scan-text" aria-hidden="true"></i>简历诊断<span data-ca-diagnosis-count></span></button><button type="button" class="cc-button" data-ca-materials><i data-lucide="mail" aria-hidden="true"></i>求职信</button><span class="ca-hint">从事实出发，逐项优化</span></div><div class="cc-workspace"><aside class="cc-sidebar"><div class="cc-sidehead"><h2>经历</h2><span class="cc-small cc-count"></span></div><div class="cc-card-list"></div><button type="button" class="cc-button cc-add"><i data-lucide="plus" aria-hidden="true"></i>补充经历</button></aside><main class="cc-preview"><div class="cc-preview-bar"><span class="cc-small">A4 · 一页</span><div class="cc-preview-tools"><button type="button" class="cc-tool cc-regions" aria-pressed="true">区域</button><button type="button" class="cc-tool cc-layout">排版</button><button type="button" class="cc-tool cc-jd-edit" hidden>查看 JD</button></div></div><div class="cc-paper-wrap"><article class="cc-paper show-regions" aria-label="一页简历预览"></article><div class="cc-mobile-map"></div></div><div class="cc-capacity"><div class="cc-cap-track"><div class="cc-cap-fill"></div></div><span class="cc-status" aria-live="polite"></span></div><div class="cc-notice" hidden><span></span><button type="button" class="cc-button cc-resolve">调整</button></div></main></div>
+ </div>
+ <div class="cc-overlay-host"></div><div class="cc-toast" hidden role="status"></div><div class="cc-measure" aria-hidden="true"></div>
+</div>
+</body>
+</html>
