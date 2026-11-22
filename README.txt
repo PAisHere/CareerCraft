@@ -19,6 +19,17 @@ PDF 和图片自动识别需要本地工作台。两个入口各自保存浏览�
 
 可选模型接入
 服务端支持兼容 OpenAI Chat Completions 接口、可返回 JSON 对象的模型。
+
+DeepSeek（Windows）
+1. 将项目根目录的 Start CareerCraft DeepSeek.example.cmd 复制为
+   Start CareerCraft DeepSeek.local.cmd。
+2. 用记事本打开 Start CareerCraft DeepSeek.local.cmd，将
+   set "CAREERCRAFT_API_KEY=********" 这一行的星号替换为自己的 DeepSeek API 密钥。
+   .local.cmd 文件已被 Git 忽略，仓库中的 .example.cmd 保留星号。
+3. 如果工作台已经运行，先停止原服务，再双击 Start CareerCraft DeepSeek.local.cmd。
+   在网页的“生成设置”勾选“同意发送上述资料并启用模型”。
+
+其他兼容模型
 例如，已运行本地模型服务时，可在 PowerShell 配置其接口地址和已安装的模型名：
 
   $env:CAREERCRAFT_API_BASE = 'http://127.0.0.1:11434/v1'
