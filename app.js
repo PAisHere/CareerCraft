@@ -202,22 +202,32 @@ function renderFlow(){
  else if(flow.stage==='direction')$('.ff-screen').innerHTML=directionHTML();
  icons();
 }
-function intakeHTML(){return `<div class="ff-heading"><div><h1>${flow.generated?'继续丰富你的经历':'从你的经历开始'}</h1><p>整理教育、实习和项目经历，生成你的第一份一页简历。</p></div>${!all().length && !flow.files.length && !Object.values(flow.profile).some(Boolean) ? '<button type="button" class="cc-button cc-quiet" data-sample>试用示例资料</button>':''}</div><div class="ff-intake"><div><div class="ff-drop" data-drop>${icon('files')}<strong>把资料放在这里</strong><span class="cc-small">PDF、DOCX、图片、TXT、Markdown</span><span class="cc-small">${location.protocol === 'file:' ? '<a href="http://127.0.0.1:8787/">打开本地工作台</a>可自动识别 PDF 和图片' : '自动提取文字，整理成可核对的经历'}</span><button type="button" class="cc-button" data-upload>选择文件</button><input class="ff-file-input" type="file" multiple accept="${materialExtensions}" data-files aria-label="上传背景资料"></div><div class="ff-files">${flow.files.map(f=>`<div class="ff-file">${icon(f.kind==='audio'?'mic':f.kind==='image'?'image':'file-text')}<button type="button" class="ff-file-main" data-file="${f.id}"><strong>${esc(f.name)}</strong><span data-material-status="${f.id}">${esc(f.status)}</span></button><button type="button" class="cc-button cc-square" data-file-remove="${f.id}" aria-label="移除${esc(f.name)}">${icon('x')}</button></div>`).join('')}</div></div><div class="ff-chat"><div class="ff-chat-head"><span>聊聊你的经历</span><span class="cc-small">文字 / 语音</span></div><div class="ff-messages" aria-live="polite">${flow.messages.length?flow.messages.slice(-5).map(m=>`<div class="ff-bubble ${m.role==='user'?'user':''}">${m.voice?icon('audio-lines')+' ':''}${esc(m.text)}</div>`).join(''):'<div class="ff-chat-empty">最近做过什么？<br>从一段实习或项目说起。</div>'}</div>${flow.pending?'<div class="ff-skip"><button type="button" class="cc-button" data-skip-followup>暂时没有</button><button type="button" class="cc-button cc-quiet" data-new-story>聊下一段</button></div>':''}<div class="ff-compose"><textarea data-chat placeholder="写下来，或点击麦克风" aria-label="输入经历">${esc(flow.chatDraft)}</textarea><div class="ff-compose-bar"><button type="button" class="cc-button cc-quiet" data-voice>${icon('mic')}语音输入</button><button type="button" class="cc-button cc-main" data-chat-send aria-label="发送经历">发送</button></div></div></div></div><div class="ff-footer"><span class="cc-small">${all().length?`${all().length} 段经历`:'草稿仅保存在当前浏览器'}</span><button type="button" class="cc-button" data-record-new>手动添加</button><button type="button" class="cc-button cc-main" data-organize >${all().length || flow.files.length ? '查看整理结果' : '填写个人信息'}</button></div>`}
+function intakeHTML(){return `<div class="ff-heading"><div><h1>${flow.generated?'继续丰富你的经历':'从你的经历开始'}</h1><p>整理教育、实习和项目经历，生成你的第一份一页简历。</p></div><button type="button" class="cc-button cc-quiet" data-sample>试用示例资料</button></div><div class="ff-intake"><div><div class="ff-drop" data-drop>${icon('files')}<strong>把资料放在这里</strong><span class="cc-small">PDF、DOCX、图片、TXT、Markdown</span><span class="cc-small">${location.protocol === 'file:' ? '<a href="http://127.0.0.1:8787/">打开本地工作台</a>可自动识别 PDF 和图片' : '自动提取文字，整理成可核对的经历'}</span><button type="button" class="cc-button" data-upload>选择文件</button><input class="ff-file-input" type="file" multiple accept="${materialExtensions}" data-files aria-label="上传背景资料"></div><div class="ff-files">${flow.files.map(f=>`<div class="ff-file">${icon(f.kind==='audio'?'mic':f.kind==='image'?'image':'file-text')}<button type="button" class="ff-file-main" data-file="${f.id}"><strong>${esc(f.name)}</strong><span data-material-status="${f.id}">${esc(f.status)}</span></button><button type="button" class="cc-button cc-square" data-file-remove="${f.id}" aria-label="移除${esc(f.name)}">${icon('x')}</button></div>`).join('')}</div></div><div class="ff-chat"><div class="ff-chat-head"><span>聊聊你的经历</span><span class="cc-small">文字 / 语音</span></div><div class="ff-messages" aria-live="polite">${flow.messages.length?flow.messages.slice(-5).map(m=>`<div class="ff-bubble ${m.role==='user'?'user':''}">${m.voice?icon('audio-lines')+' ':''}${esc(m.text)}</div>`).join(''):'<div class="ff-chat-empty">最近做过什么？<br>从一段实习或项目说起。</div>'}</div>${flow.pending?'<div class="ff-skip"><button type="button" class="cc-button" data-skip-followup>暂时没有</button><button type="button" class="cc-button cc-quiet" data-new-story>聊下一段</button></div>':''}<div class="ff-compose"><textarea data-chat placeholder="写下来，或点击麦克风" aria-label="输入经历">${esc(flow.chatDraft)}</textarea><div class="ff-compose-bar"><button type="button" class="cc-button cc-quiet" data-voice>${icon('mic')}语音输入</button><button type="button" class="cc-button cc-main" data-chat-send aria-label="发送经历">发送</button></div></div></div></div><div class="ff-footer"><span class="cc-small">${all().length?`${all().length} 段经历`:'草稿仅保存在当前浏览器'}</span><button type="button" class="cc-button" data-record-new>手动添加</button><button type="button" class="cc-button cc-main" data-organize >${all().length || flow.files.length ? '查看整理结果' : '填写个人信息'}</button></div>`}
 function reviewHTML(){return `<div class="ff-heading"><div><h1>这是你的经历</h1><p>${flow.sample?'当前资料中包含虚构示例，请在投递前替换。':'确认内容，之后随时可以补充。'}</p></div><button type="button" class="cc-button" data-voice>${icon('mic')}语音补充</button></div><section class="ff-profile"><h2>个人信息</h2><div class="ff-form-grid">${[['name','姓名','你的姓名'],['phone','手机','选填'],['email','邮箱','选填']].map(([key,label,placeholder])=>`<label class="cc-field ${key==='email'?'ff-full':''}"><span>${label}</span><input class="cc-input" data-profile="${key}" value="${esc(flow.profile[key])}" placeholder="${placeholder}"></label>`).join('')}<label class="cc-field ff-full"><span>教育背景</span><textarea class="cc-input" data-profile="education" rows="2" placeholder="学校、专业、学位、起止时间">${esc(flow.profile.education)}</textarea></label><label class="cc-field ff-full"><span>技能</span><textarea class="cc-input" data-profile="skills" rows="2" placeholder="语言、工具、专业技能">${esc(flow.profile.skills)}</textarea></label></div></section><div class="ff-records">${all().map(c=>`<div class="ff-record"><span class="ff-record-icon">${icon(c.section==='实习经历'?'briefcase-business':c.section==='学术经历'?'graduation-cap':'layers')}</span><div class="ff-record-info"><strong>${esc(c.name)}</strong><span>${esc(c.section)} · ${c.points.length} 个要点${c.date?' · '+esc(c.date):''}</span></div><button type="button" class="cc-button cc-quiet" data-record-edit="${c.id}">编辑</button>${flow.generated ? `<button type="button" class="cc-button cc-quiet" data-ca-locate="${c.id}">在简历中查看</button>` : ''}</div>`).join('')||'<div class="ff-empty">资料已添加。补充文字或语音，整理成经历。</div>'}</div>${flow.files.some(f=>f.needsText && !f.reading)?'<p class="ff-review-note">有材料尚未读出内容。在「资料录入」可查看识别状态或补充文字。</p>':''}<div class="ff-gap-list"><button type="button" class="ff-gap" data-record-new>${icon('plus')}添加经历</button></div><div class="ff-footer"><button type="button" class="cc-button" data-stage="intake">返回资料</button><button type="button" class="cc-button cc-main" data-review-next ${canBuildResume() ? '' : 'disabled'}>确认并继续</button></div>`}
 function directionHTML(){return `<div class="ff-heading"><div><h1>想投递哪类岗位？</h1><p>先生成一份通用简历。</p></div></div><div class="ff-directions">${[['产品经理','panels-top-left','用户 · 产品 · 数据'],['投行','chart-no-axes-combined','财务 · 研究 · 分析'],['算法','network','模型 · 实验 · 工程']].map(([name,ico,sub])=>`<button type="button" class="ff-direction" data-direction="${name}" aria-pressed="${(flow.targetRole || state.role) === name}">${icon(ico)}<strong>${name === '投行' ? '投资银行分析师' : name === '算法' ? '算法工程师' : name}</strong><span>${sub}</span></button>`).join('')}</div><label class="cc-field ff-target"><span>想特别突出什么？</span><input class="cc-input" data-emphasis placeholder="选填，例如 AI 产品、金融科技" value="${esc(flow.emphasis)}"></label><div class="ff-footer"><button type="button" class="cc-button" data-stage="review">返回经历</button><button type="button" class="cc-button cc-main" data-generate-base>生成通用简历</button></div>`}
 function useSample() {
+  const fillProfile = !all().length && !flow.files.length && !Object.values(flow.profile).some(Boolean);
+  const loadedSources = new Set(flow.files.filter(file => file.id.startsWith('sample')).map(file => file.name));
+  const missingSources = [...new Set(sampleRecords.map(record => record.source))]
+    .filter(source => !loadedSources.has(source));
+  const missingRecords = sampleRecords.filter(record => !item(record.id));
+  if (!missingSources.length && !missingRecords.length) {
+    toast('已载入全部示例资料');
+    return;
+  }
   flow.sample = true;
-  flow.files = [...new Set(sampleRecords.map(record => record.source))].map((name, index) => ({
-    id: 'sample' + index, name, status: '虚构示例 · 已整理', kind: 'document'
-  }));
-  flow.records = clone(sampleRecords);
-  flow.profile = {
-    name: '陈安禾', phone: '000 0000 0000', email: 'candidate@example.com',
-    education: '青禾大学（虚构） · 信息管理 · 硕士 · 2023.09 — 2025.06\n南川学院（虚构） · 统计学 · 本科 · 2019.09 — 2023.06',
-    skills: '工具：Figma、Excel、SQL、Python。\n方法：用户研究、财务建模、机器学习模型评估。'
-  };
-  flow.messages = [{ role: 'assistant', text: `已整理出 ${flow.records.length} 段经历。还有其他想补充的吗？` }];
-  flow.pending = null;
+  flow.files.push(...missingSources.map(name => ({
+    id: uid('sample'), name, status: '虚构示例 · 已整理', kind: 'document'
+  })));
+  flow.records.push(...clone(missingRecords));
+  if (fillProfile) {
+    flow.profile = {
+      name: '陈安禾', phone: '000 0000 0000', email: 'candidate@example.com',
+      education: '青禾大学（虚构） · 信息管理 · 硕士 · 2023.09 — 2025.06\n南川学院（虚构） · 统计学 · 本科 · 2019.09 — 2023.06',
+      skills: '工具：Figma、Excel、SQL、Python。\n方法：用户研究、财务建模、机器学习模型评估。'
+    };
+  }
+  flow.messages.push({ role: 'assistant', text: `已载入 ${sampleRecords.length} 段示例经历。` });
   render(false);
   save();
 }
@@ -733,7 +743,7 @@ function generateDoc({ role, jd, emphasis, plan, previous }) {
       const next = clone(result);
       if (!count) next.selected.push(record.id);
       (next.bullets[record.id] ??= []).push(point.id);
-      if (flow.sample && jd && point.short !== point.text) next.compact[point.id] = true;
+      if (samplesById.has(record.id) && jd && point.short !== point.text) next.compact[point.id] = true;
       if (measure(next).over > 1) next.compact[point.id] = true;
       if (measure(next).over > 1) continue;
       count += 1;
@@ -821,7 +831,7 @@ async function generateVersion(mode, button) {
     }
   }
 }
-function sourceModal(id){const c=item(id);openModal('资料来源',`<div class="cc-file-row">${icon('file-text')}<div><strong>${esc(c.source)}</strong><span class="cc-small">${esc(c.name)}${flow.sample?' · 示例资料':''}</span></div></div><h3>原始记录</h3><div class="cc-source-text">${esc(c.sourceText||c.points.map(p => [descriptivePointLabel(p), p.text].filter(Boolean).join('：')).join('\n\n'))}</div><div class="cc-dialog-actions"><button type="button" class="cc-button cc-main" data-close>完成</button></div>`,'source');}
+function sourceModal(id){const c=item(id);openModal('资料来源',`<div class="cc-file-row">${icon('file-text')}<div><strong>${esc(c.source)}</strong><span class="cc-small">${esc(c.name)}${samplesById.has(c.id)?' · 示例资料':''}</span></div></div><h3>原始记录</h3><div class="cc-source-text">${esc(c.sourceText||c.points.map(p => [descriptivePointLabel(p), p.text].filter(Boolean).join('：')).join('\n\n'))}</div><div class="cc-dialog-actions"><button type="button" class="cc-button cc-main" data-close>完成</button></div>`,'source');}
 
 
 function resolveModal(){const d=doc();openModal('调整到一页',`<p class="cc-message">选择要精简或移出的经历。</p>${d.selected.map(id=>`<div class="cc-row"><span>${esc(item(id).name)}</span><div class="cc-actions"><button type="button" class="cc-button" data-trim="${id}">精简</button><button type="button" class="cc-button" data-remove="${id}">移出</button></div></div>`).join('')}<div class="cc-dialog-actions"><button type="button" class="cc-button cc-main" data-close>完成</button></div>`,'resolve');}
