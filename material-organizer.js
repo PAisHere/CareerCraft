@@ -9,7 +9,8 @@
     [/^(?:学术经历|科研经历|研究经历|科研项目|学术|科研|research(?: experience)?)$/i, '学术经历'],
     [/^(?:科研|学术|研究)(?:与|和|及|、|\/|&)(?:项目|项目实践)(?:经历|经验)?$|^(?:项目|项目实践)(?:与|和|及|、|\/|&)(?:科研|学术|研究)(?:经历|经验)?$/i, 'mixed-projects']
   ];
-  const fields = /^(姓名(?:\s*\(中文\))?|name|电话|手机|phone|邮箱|e-?mail|角色|职位|职务|role|时间|起止时间|date|项目名称|项目|公司|单位|名称)\s*:\s*(.+)$/i;
+  const fields = /^(姓名(?:\s*\(中文\))?|name|电话|手机|phone|邮箱|e-?mail|角色|职位|职务|role|时间|起止时间|date)\s*:\s*(.+)$/i;
+  const entryName = /^(?:项目名称|项目|公司|单位|名称|project(?:\s+(?:name|title))?)\s*:\s*(.+)$/i;
   const datePart = '(?:19|20)\\d{2}(?:\\s*[./年-]\\s*\\d{1,2}\\s*月?)?';
   const dateRange = new RegExp(datePart + '\\s*(?:[-–—~至到]+|\\bto\\b)\\s*(?:' + datePart + '|至今|现在|present|current)', 'i');
   const bullet = /^(?:[-*•●⚫○◉▪◦·\uf0b7]\s*|[（(]?\d{1,2}[).、．）]\s*)/;
@@ -27,7 +28,6 @@
     const separated = line.match(/^([^:]+)(?::\s*(.*))?$/);
     if (!separated) return null;
     const name = compactChinese(trimEdges(separated[1]));
-    if (name === '项目' && separated[2]) return null;
     const type = sectionAliases.find(([pattern]) => pattern.test(name))?.[1];
     return type && { type, detail: separated[2] || '' };
   }
@@ -99,7 +99,8 @@
     };
 
     for (const [index, { raw, line, markdownHeading, gap }] of lines.entries()) {
-      const heading = identifySection(line);
+      const nameField = line.match(entryName);
+      const heading = nameField ? null : identifySection(line);
       if (heading) {
         flush();
         section = heading.type;
@@ -118,7 +119,6 @@
       }
 
       const date = line.match(dateRange)?.[0] || '';
-      const nameField = /^(项目名称|项目|公司|单位|名称)$/.test(label);
       const roleField = /^(角色|职位|职务|role)$/.test(label);
       const dateField = /^(时间|起止时间|date)$/.test(label);
       const headingText = trimEdges(line.replace(date || /$^/, ''));
@@ -145,7 +145,7 @@
           (!record || gap || /公司|项目|实验室|团队|研究所|实习|比赛|竞赛/.test(headingText)))
       ));
       if (looksLikeEntry) {
-        newRecord(entryFromLine(field?.[2] || line, date), raw);
+        newRecord(entryFromLine(nameField?.[1] || line, date), raw);
       } else if (record && !record.role && !record.points.length && isTitle(line) && role.test(line)) {
         record.role = raw;
         record.source.push(raw);

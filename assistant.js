@@ -52,6 +52,13 @@
       (focus.length > 1 && normalized(text).includes(focus) ? 24 : 0);
   }
 
+  function requiredParts(title) {
+    // Keep alternatives and parenthetical examples together while separating required skills.
+    const parts = title.split(/(?:以及|并且|(?<![参给授赋])与|和(?![平谐解])|(?<![涉普波触累提])及(?!时)|\band\b|(?<=\s)&(?=\s))(?![^()（）]*[)）])/i);
+    return parts.flatMap(part => /或|任选|任一|之一|\bor\b/i.test(part)
+      ? [part] : part.split(/、(?![^()（）]*[)）])/)).map(part => part.trim()).filter(Boolean);
+  }
+
   function jdLines(text, jobTitle = '') {
     const header = /^(?:岗位职责|工作职责|职位描述|岗位描述|任职要求|任职资格|职位要求|岗位要求|加分项|优先条件|职责|要求|任职条件|职位信息|responsibilities|requirements|qualifications|preferred qualifications)$/i;
     const blocks = text.replace(/([^\n])((?:岗位职责|任职要求|加分项)[：:])/g, '$1\n$2')
@@ -78,7 +85,13 @@
         }
       }
     }
-    return lines.length ? lines : [{ id: 'r0', sourceLine: text, title: text, kind: '待核对' }];
+    if (!lines.length) return [{ id: 'r0', sourceLine: text, title: text, kind: '待核对' }];
+    return lines.flatMap(line => {
+      const parts = requiredParts(line.title);
+      if (parts.length < 2) return [line];
+      // Existing model evidence for a whole line cannot establish a newly separated requirement.
+      return parts.map((title, index) => ({ ...line, id: `${line.id}-${index}`, title }));
+    });
   }
 
   function evidenceFor(requirement) {
