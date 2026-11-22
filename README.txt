@@ -17,29 +17,30 @@ CareerCraft · 求职工作台
 直接打开 index.html 仍可手动录入及导入 DOCX、TXT、Markdown。
 PDF 和图片自动识别需要本地工作台。两个入口各自保存浏览器草稿。
 
-可选模型接入
-服务端支持兼容 OpenAI Chat Completions 接口、可返回 JSON 对象的模型。
+DeepSeek 模型接入（可选，已实测）
+已用真实 DeepSeek API 和虚构资料验证 deepseek-flash 的通用简历筛选、JD 定制和证据匹配。
 
-DeepSeek（Windows）
-1. 将项目根目录的 Start CareerCraft DeepSeek.example.cmd 复制为
-   Start CareerCraft DeepSeek.local.cmd。
-2. 用记事本打开 Start CareerCraft DeepSeek.local.cmd，将
-   set "CAREERCRAFT_API_KEY=********" 这一行的星号替换为自己的 DeepSeek API 密钥。
-   .local.cmd 文件已被 Git 忽略，仓库中的 .example.cmd 保留星号。
-3. 如果工作台已经运行，先停止原服务，再双击 Start CareerCraft DeepSeek.local.cmd。
-   在网页的“生成设置”勾选“同意发送上述资料并启用模型”。
+1. 将仓库根目录的 .env.example 复制为 .env，并填写自己的 CAREERCRAFT_API_KEY。
+   模板已填好 DeepSeek 官方 API 地址和 deepseek-flash 模型名。
+2. 运行 npm start，或在 Windows 双击 Start CareerCraft.cmd。服务启动时会自动读取 .env。
+   修改配置后需要重启服务。
+3. 在网页的“生成设置”确认目标服务，勾选同意并保存。可先使用“试用示例资料”。
 
-其他兼容模型
-例如，已运行本地模型服务时，可在 PowerShell 配置其接口地址和已安装的模型名：
+仓库提供空白密钥模板，实际密钥由每位使用者在本地配置。.env 已加入 Git 忽略规则，
+密钥由服务端读取。DeepSeek 密钥留空时仍可使用本地规则。终端中已设置的同名环境变量
+优先于 .env。
 
-  $env:CAREERCRAFT_API_BASE = 'http://127.0.0.1:11434/v1'
-  $env:CAREERCRAFT_MODEL = '<已安装的模型名>'
-  npm start
+Windows 也可将 Start CareerCraft DeepSeek.example.cmd 复制为
+Start CareerCraft DeepSeek.local.cmd，把 set "CAREERCRAFT_API_KEY=********" 中的星号
+换成自己的密钥，再双击本地脚本启动。这个 .local.cmd 同样由 Git 忽略。
 
-如服务要求认证，在启动服务的终端设置 CAREERCRAFT_API_KEY。密钥只由本地服务读取。
-随后在网页的“生成设置”查看目标服务，并自行启用。服务仅接收筛选所需的经历名称和
-要点、岗位方向、JD 条目和填写的侧重点。模型返回要点 ID 和引用，由应用核对引用是否
-来自资料。简历和求职信继续使用已有事实组织内容。模型失效时会回退到本地规则。
+也可以将 CAREERCRAFT_API_BASE 和 CAREERCRAFT_MODEL 换成支持 OpenAI Chat Completions
+和 JSON 输出的服务。例如本机模型服务可使用 http://127.0.0.1:11434/v1 及已安装的模型名，
+并按该服务的认证要求设置密钥。
+
+模型服务接收筛选所需的经历名称和要点、岗位方向、JD 条目和侧重点。模型返回要点 ID
+和引用，应用会核对引用是否来自资料。简历和求职信基于已有事实组织内容。模型调用失败
+时会自动回退到本地规则。
 
 材料和导出
 - PDF 优先提取文字层，扫描页自动使用 OCR。PNG、JPG、WebP、BMP、GIF 和 AVIF

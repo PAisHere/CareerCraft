@@ -1,6 +1,13 @@
 import { readFile } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import { spawn } from 'node:child_process';
+import { loadEnvFile } from 'node:process';
+
+try {
+  loadEnvFile(new URL('.env', import.meta.url));
+} catch (error) {
+  if (error.code !== 'ENOENT') throw error;
+}
 
 const files = {
   '/': ['index.html', 'text/html'],
@@ -43,13 +50,15 @@ const port = Number(process.env.PORT || 8787);
 const allowedHosts = new Set(['127.0.0.1:' + port, 'localhost:' + port]);
 const modelName = (process.env.CAREERCRAFT_MODEL || '').trim();
 const apiBase = (process.env.CAREERCRAFT_API_BASE || '').trim().replace(/\/+$/, '');
-const apiKey = process.env.CAREERCRAFT_API_KEY;
-const endpoint = apiBase && modelName ? new URL(apiBase + '/chat/completions') : null;
-if (endpoint && (endpoint.username || endpoint.password || endpoint.search || endpoint.hash ||
-  (endpoint.protocol !== 'https:' && !(endpoint.protocol === 'http:' &&
-    ['localhost', '127.0.0.1', '[::1]'].includes(endpoint.hostname))))) {
+const apiKey = (process.env.CAREERCRAFT_API_KEY || '').trim();
+const configuredEndpoint = apiBase && modelName ? new URL(apiBase + '/chat/completions') : null;
+if (configuredEndpoint && (configuredEndpoint.username || configuredEndpoint.password ||
+  configuredEndpoint.search || configuredEndpoint.hash || (configuredEndpoint.protocol !== 'https:' &&
+    !(configuredEndpoint.protocol === 'http:' &&
+      ['localhost', '127.0.0.1', '[::1]'].includes(configuredEndpoint.hostname))))) {
   throw new Error('CAREERCRAFT_API_BASE must use HTTPS or a local HTTP service, without credentials or query parameters.');
 }
+const endpoint = configuredEndpoint?.hostname === 'api.deepseek.com' && !apiKey ? null : configuredEndpoint;
 
 const systemPrompt = [
   'You select factual resume evidence and identify JD requirements for CareerCraft.',
