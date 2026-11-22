@@ -250,7 +250,16 @@ function canBuildResume() {
   return !!(all().length || flow.profile.education.trim() || flow.profile.skills.trim());
 }
 function reviewNext(){if(!canBuildResume())return;flow.reviewed=true;if(!flow.asked&&all().some(c=>!c.date)){flow.asked=true;openModal('还有这些信息吗？',`<p class="cc-message">经历的起止时间、你的职责或实际成果。</p><div class="ff-gap-list"><button type="button" class="cc-button" data-voice>${icon('mic')}语音补充</button><button type="button" class="cc-button" data-close>回去填写</button></div><div class="cc-dialog-actions"><button type="button" class="cc-button cc-main" data-skip-gaps>暂不补充，继续</button></div>`,'gaps')}else setStage('direction')}
-function profileSections(){let h='';if(flow.profile.education.trim())h+=`<section class="cc-section cc-region" data-layout="education"><h2 class="cc-section-title">教育背景</h2>${flow.profile.education.split('\n').filter(Boolean).map(t=>`<div class="cc-education-row"><strong>${esc(t)}</strong></div>`).join('')}</section>`;return h}
+function profileSections() {
+  const lines = flow.profile.education.split('\n').map(line => line.trim()).filter(Boolean);
+  if (!lines.length) return '';
+
+  const rows = lines.map(line => {
+    const { detail, date } = organizer.splitEducationLine(line);
+    return `<div class="cc-education-row">${detail ? `<strong>${esc(detail)}</strong>` : ''}${date ? `<span class="cc-date">${esc(date)}</span>` : ''}</div>`;
+  }).join('');
+  return `<section class="cc-section cc-region" data-layout="education"><h2 class="cc-section-title">教育背景</h2>${rows}</section>`;
+}
 function skillSection(){if(!flow.profile.skills.trim())return '';return `<section class="cc-section cc-region" data-layout="skills"><h2 class="cc-section-title">专业技能</h2>${flow.profile.skills.split('\n').filter(Boolean).map(t=>`<p class="cc-skill">${esc(t)}</p>`).join('')}</section>`}
 function editRecord(id){const c=id?item(id):null;openModal(c?'编辑经历':'添加经历',`<label class="cc-field"><span>名称</span><input class="cc-input" data-r-name value="${esc(c?.name)}" placeholder="公司、项目或比赛名称"></label><div class="ff-form-grid"><label class="cc-field"><span>类型</span><select class="cc-input" data-r-type>${sectionOrder.map(s=>`<option ${c?.section===s?'selected':''}>${s}</option>`).join('')}</select></label><label class="cc-field"><span>起止时间</span><input class="cc-input" data-r-date value="${esc(c?.date)}" placeholder="选填"></label></div><label class="cc-field"><span>角色</span><input class="cc-input" data-r-role value="${esc(c?.role)}" placeholder="选填"></label><label class="cc-field"><span>经历要点</span><textarea class="cc-input" rows="7" data-r-text placeholder="每行一个要点">${esc(c?.points.map(p=>p.text).join('\n'))}</textarea></label><div class="cc-dialog-actions">${c?`<button type="button" class="cc-button cc-quiet" data-record-delete="${c.id}">删除</button>`:''}<button type="button" class="cc-button" data-voice ${c?`data-voice-target="${c.id}"`:''}>${icon('mic')}语音补充</button><button type="button" class="cc-button cc-main" data-record-save="${c?.id||''}">保存</button></div><p class="cc-error" role="alert"></p>`,'record')}
 function saveRecord(id) {

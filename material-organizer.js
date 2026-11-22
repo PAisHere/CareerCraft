@@ -13,6 +13,15 @@
   const entryName = /^(?:项目名称|项目|公司|单位|名称|project(?:\s+(?:name|title))?)\s*:\s*(.+)$/i;
   const datePart = '(?:19|20)\\d{2}(?:\\s*[./年-]\\s*\\d{1,2}\\s*月?)?';
   const dateRange = new RegExp(datePart + '\\s*(?:[-–—~至到]+|\\bto\\b)\\s*(?:' + datePart + '|至今|现在|present|current)', 'i');
+  const educationDatePart = datePart + '年?';
+  const educationDateRange = new RegExp(
+    `(?<!\\d)${educationDatePart}\\s*(?:至今|(?:[-–—~至到]+|\\bto\\b)\\s*(?:${educationDatePart}|至今|现在|present|current))(?!\\d)`,
+    'i'
+  );
+  const educationDateAtEnd = new RegExp(
+    `(?<![\\d./])(?:(?:预计|\\bexpected)\\s*)?${educationDatePart}(?:\\s*(?:毕业|入学))?(?=\\s*[)）]?\\s*$)`,
+    'i'
+  );
   const bullet = /^(?:[-*•●⚫○◉▪◦·\uf0b7]\s*|[（(]?\d{1,2}[).、．）]\s*)/;
   const action = /^(?:负责|主导|参与|协助|完成|设计|开发|构建|搭建|推进|使用|通过|基于|撰写|维护|组织|梳理|跟进|优化|实现|收集|分析|输出|管理|支持|协调|(?:built|led|designed|developed|implemented|managed|created|improved)\b)/i;
   const education = /大学|学院|本科|硕士|博士|学士|专业|university|college|bachelor|master|phd/i;
@@ -23,6 +32,26 @@
   const normalize = value => value.normalize('NFKC').replace(/[\u200b\u200c\u200d\ufeff]/g, '');
   const compactChinese = value => value.replace(/([\u3400-\u9fff])\s+(?=[\u3400-\u9fff])/g, '$1');
   const trimEdges = value => value.replace(headingEdge, '').trim();
+
+  function splitEducationLine(line) {
+    const searchable = line.replace(/[０-９．／－～]/g, char => char.normalize('NFKC'));
+    const date = searchable.match(educationDateRange) || searchable.match(educationDateAtEnd);
+    if (!date) return { detail: line, date: '' };
+
+    const end = date.index + date[0].length;
+    let before = line.slice(0, date.index);
+    let after = line.slice(end);
+    if (/[（(]\s*$/.test(before) && /^\s*[)）]/.test(after)) {
+      before = before.replace(/[（(]\s*$/, '');
+      after = after.replace(/^\s*[)）]/, '');
+    }
+    const left = before.replace(/[\s·|｜,，、:：]+$/, '').trim();
+    const right = after.replace(/^[\s·|｜,，、:：]+/, '').trim();
+    const separator = after.trimStart().match(/^[·|｜,，、:：]/)?.[0] ||
+      before.trimEnd().match(/[·|｜,，、:：]$/)?.[0];
+    const detail = left && right ? [left, separator, right].filter(Boolean).join(' ') : left || right;
+    return { detail, date: line.slice(date.index, end).trim() };
+  }
 
   function identifySection(line) {
     const separated = line.match(/^([^:]+)(?::\s*(.*))?$/);
@@ -187,5 +216,5 @@
     };
   }
 
-  window.CareerCraftOrganizer = { organize };
+  window.CareerCraftOrganizer = { organize, splitEducationLine };
 })();

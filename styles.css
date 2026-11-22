@@ -223,6 +223,11 @@ body {
   color: #161616;
 }
 #cc-proto .cc-resume, #cc-proto .cc-source-text, #cc-proto .ca-row-head { overflow-wrap: anywhere; }
+#cc-proto .cc-person { text-align: center; }
+#cc-proto .cc-person h1 { padding-right: 0; }
+#cc-proto .cc-person:has(.cc-photo) { padding-inline: 65px; }
+#cc-proto .cc-education-row { align-items: baseline; }
+#cc-proto .cc-education-row .cc-date { margin-inline-start: auto; }
 #cc-proto .cc-date { white-space: normal; text-align: right; max-width: 42%; }
 #cc-proto .cc-paper .cc-section-title { border-color: #333; }
 #cc-proto .cc-paper .cc-date { color: #666; }
