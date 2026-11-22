@@ -47,7 +47,22 @@ function readerAsset(path) {
   return null;
 }
 const port = Number(process.env.PORT || 8787);
-const allowedHosts = new Set(['127.0.0.1:' + port, 'localhost:' + port]);
+const onRailway = Boolean(process.env.RAILWAY_ENVIRONMENT_ID);
+const railwayDomain = process.env.RAILWAY_PUBLIC_DOMAIN?.trim();
+const publicAddress = process.env.CAREERCRAFT_PUBLIC_ORIGIN?.trim() ||
+  (railwayDomain ? 'https://' + railwayDomain : '');
+const publicUrl = publicAddress ? new URL(publicAddress) : null;
+if (publicUrl && (publicUrl.protocol !== 'https:' || publicUrl.username || publicUrl.password ||
+  publicUrl.pathname !== '/' || publicUrl.search || publicUrl.hash)) {
+  throw new Error('Configure the public address as an HTTPS origin without credentials, a path, or query parameters.');
+}
+const localAddress = 'http://127.0.0.1:' + port;
+const requestOrigins = new Map([
+  ['127.0.0.1:' + port, localAddress],
+  ['localhost:' + port, 'http://localhost:' + port]
+]);
+if (publicUrl) requestOrigins.set(publicUrl.host, publicUrl.origin);
+const bindAddress = onRailway || publicUrl ? '0.0.0.0' : '127.0.0.1';
 const modelName = (process.env.CAREERCRAFT_MODEL || '').trim();
 const apiBase = (process.env.CAREERCRAFT_API_BASE || '').trim().replace(/\/+$/, '');
 const apiKey = (process.env.CAREERCRAFT_API_KEY || '').trim();
@@ -128,9 +143,9 @@ function validatePlan(result, input) {
   return { order, requirements };
 }
 
-async function generatePlan(request, response) {
+async function generatePlan(request, response, expectedOrigin) {
   if (!endpoint) return json(response, 503, { error: 'Model is not configured' });
-  if (request.headers.origin !== 'http://' + request.headers.host ||
+  if (request.headers.origin !== expectedOrigin ||
       !request.headers['content-type']?.startsWith('application/json')) {
     return json(response, 403, { error: 'Use the CareerCraft workspace from this origin' });
   }
@@ -167,9 +182,17 @@ async function generatePlan(request, response) {
 }
 
 createServer(async (request, response) => {
-  if (!allowedHosts.has(request.headers.host)) return json(response, 403, { error: 'Unexpected host' });
   const path = (request.url || '').split('?')[0];
-  if (path === '/api/plan' && request.method === 'POST') return generatePlan(request, response);
+  const host = request.headers.host?.toLowerCase();
+  const expectedOrigin = requestOrigins.get(host);
+  if (path === '/health' && (request.method === 'GET' || request.method === 'HEAD') &&
+    (expectedOrigin || (onRailway && host === 'healthcheck.railway.app'))) {
+    return json(response, 200, { ok: true });
+  }
+  if (!expectedOrigin) return json(response, 403, { error: 'Unexpected host' });
+  if (path === '/api/plan' && request.method === 'POST') {
+    return generatePlan(request, response, expectedOrigin);
+  }
   if (request.method !== 'GET' && request.method !== 'HEAD') return json(response, 405, { error: 'Method not allowed' });
   if (path === '/api/model') return json(response, 200, {
     enabled: !!endpoint,
@@ -192,8 +215,8 @@ createServer(async (request, response) => {
       error: reader ? 'The local reader dependency is unavailable. Run npm ci.' : 'Unable to read application files'
     });
   }
-}).listen(port, '127.0.0.1', () => {
-  const address = 'http://127.0.0.1:' + port + '/';
+}).listen(port, bindAddress, () => {
+  const address = (publicUrl?.origin || localAddress) + '/';
   console.log('CareerCraft ' + address);
   if (process.argv.includes('--open') && process.platform === 'win32') {
     const browser = spawn('explorer.exe', [address], { detached: true, stdio: 'ignore', windowsHide: true });

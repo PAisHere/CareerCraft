@@ -17,6 +17,18 @@ CareerCraft · 求职工作台
 直接打开 index.html 仍可手动录入及导入 DOCX、TXT、Markdown。
 PDF 和图片自动识别需要本地工作台。两个入口各自保存浏览器草稿。
 
+部署到 Railway
+1. 在 Railway 新建服务，连接此 GitHub 仓库的 main 分支。启动命令使用 npm start。
+   服务在 Railway 上监听 0.0.0.0 和平台分配的 PORT。
+2. 在服务的 Settings → Networking → Public Networking 生成域名。服务会读取
+   RAILWAY_PUBLIC_DOMAIN，并接受该域名的 HTTPS 请求。使用自有域名时，可设置
+   CAREERCRAFT_PUBLIC_ORIGIN 为完整的 HTTPS 来源，例如 https://career.example.com。
+   如果是在首次部署后新增域名或修改服务变量，请重新部署。
+3. 可将健康检查路径设为 /health。部署成功后，将 Railway 提供的 HTTPS 地址分享给访客。
+
+公开演示可以使用本地规则。需要开放付费模型时，先为模型接口配置访问控制和限流，
+再在 Railway 服务变量中设置 CAREERCRAFT_API_BASE、CAREERCRAFT_MODEL 和密钥。
+
 DeepSeek 模型接入（可选，已实测）
 已用真实 DeepSeek API 和虚构资料验证 deepseek-flash 的通用简历筛选、JD 定制和证据匹配。
 
