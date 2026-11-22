@@ -4,7 +4,146 @@ const $=s=>root.querySelector(s),$$=s=>[...root.querySelectorAll(s)];
 const clone=v=>JSON.parse(JSON.stringify(v));
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const icon=n=>`<i data-lucide="${n}" aria-hidden="true"></i>`;
-const data=[{"id":"intern","name":"森屿生活（虚构）","role":"产品实习生","section":"实习经历","date":"2024.03 — 2024.06","source":"示例实习记录.pdf","scores":[96,20,42],"tags":["用户研究","需求分析","产品设计"],"reason":"履约流程 · 需求分析 · 体验验证","points":[{"id":"i1","group":"到店自提流程","label":"需求调研","text":"走访 8 家社区门店，记录店员核销订单与处理缺货的操作过程；整理顾客取货时的等待与沟通问题，绘制从下单到提货的服务流程。","short":"走访 8 家社区门店，梳理订单核销、缺货处理与提货等待问题。"},{"id":"i2","group":"到店自提流程","label":"流程设计","text":"为预约提货设计时段选择、订单确认和到店提醒页面，补齐迟到、取消与部分缺货的异常状态；通过纸面原型与店员一起核对操作顺序。","short":"设计时段选择、订单确认和到店提醒页面，补齐取消与缺货状态。"},{"id":"i3","group":"到店自提流程","label":"数据核对","text":"用 SQL 汇总不同时段的核销记录，对比工作日与周末的到店分布；逐项核对异常订单，整理影响顾客等待时间的因素。","short":"用 SQL 汇总核销记录，比较到店时段分布并排查异常订单。"},{"id":"i4","group":"门店试用回访","label":"试用反馈","text":"编制 24 条操作任务，邀请店员试用订单处理页面，记录误触位置、重复操作与不清楚的状态提示，形成按影响程度排序的修改清单。","short":"编制 24 条试用任务，记录误触与重复操作，形成修改清单。"},{"id":"i5","group":"门店试用回访","label":"交付跟进","text":"按页面状态核对试用版本，对照问题清单复测修改结果；汇总门店反馈与仍需观察的问题，更新交接记录和操作指引。","short":"复测试用版本，汇总门店反馈并更新交接记录与操作指引。"}]},{"id":"agent","name":"社区维修预约助手","role":"课程实践","section":"个人项目","date":"2024.09 — 2024.12","source":"示例项目说明.docx","scores":[91,16,87],"tags":["AI产品","Agent","评测"],"reason":"服务流程 · 对话设计 · 边界处理","points":[{"id":"a1","label":"场景拆解","text":"围绕住户报修的信息遗漏问题，拆分故障描述、地址核对、时间选择与人工确认四个步骤；将无法判断的故障留给服务人员处理。","short":"拆分故障描述、地址核对与预约确认步骤，为不确定情况设置人工处理入口。"},{"id":"a2","label":"Agent 原型","text":"搭建多轮预约对话原型，按规则检查地址和时间字段；调用模拟排班表展示可预约时段，在提交前请住户确认完整工单。","short":"搭建预约对话原型，检查关键字段、查询模拟排班并确认工单。"},{"id":"a3","label":"流程评估","text":"设计重复报修、地址缺失和临时改约等 36 种测试情境，记录对话能否正确补问、保留已有信息并进入合适的处理分支。","short":"用 36 种测试情境检查补问、信息保留和异常分支处理。"}]},{"id":"campus","name":"场馆预约小程序","role":"交互设计课程","section":"个人项目","date":"2023.10 — 2023.12","source":"示例课程与课题.pdf","scores":[82,24,48],"tags":["用户研究","原型","产品设计"],"reason":"预约体验 · 状态反馈","points":[{"id":"c1","label":"问题梳理","text":"访谈场馆管理员和使用者，整理可用时段难查、预约规则分散与临时取消不便的问题，确定时段日历和预约记录为核心页面。","short":"整理时段查询、规则查阅与取消预约问题，确定日历和预约记录页面。"},{"id":"c2","label":"交互原型","text":"完成日期切换、场地选择和预约确认的连贯原型；区分可预约、已约满与维护中的状态，并在取消操作后展示即时反馈。","short":"完成场地预约原型，区分可预约、约满与维护状态。"},{"id":"c3","label":"可用性验证","text":"邀请 6 位同学完成预约与取消任务，根据操作记录调整时间选择方式和规则提示的位置，保留修改前后的任务完成记录。","short":"邀请 6 位同学试用，根据任务记录调整时间选择与规则提示。"}]},{"id":"rag","name":"设备说明书检索工具","role":"学习项目","section":"个人项目","date":"2024.01 — 2024.02","source":"示例项目说明.docx","scores":[73,35,95],"tags":["检索","RAG","知识库"],"reason":"文档结构 · 检索验证","points":[{"id":"r1","label":"资料整理","text":"选取公开的家用设备说明书，按型号、操作步骤与故障代码整理段落，为每段保留文档标题和章节位置，方便核对原始说明。","short":"按型号、操作步骤与故障代码整理说明书，并保留章节位置。"},{"id":"r2","label":"检索实现","text":"组合关键词匹配与语义检索，比较型号过滤前后的召回结果；对相似型号混淆和操作步骤缺失的问题建立可复查的错误记录。","short":"组合关键词与语义检索，比较型号过滤效果并记录召回错误。"},{"id":"r3","label":"答案校验","text":"编写 48 个操作与故障查询问题，逐一核对返回段落能否支持回答；当资料不足时标注缺失信息，避免把相近型号的步骤混用。","short":"用 48 个问题核对回答依据，标注资料不足并排查型号混用。"}]},{"id":"finance","name":"岚桥咨询（虚构）","role":"产业研究助理","section":"实习经历","date":"2023.07 — 2023.09","source":"示例实习记录.pdf","scores":[31,98,25],"tags":["金融","研究","数据分析"],"reason":"产业资料 · 财务口径","points":[{"id":"f1","label":"市场资料","text":"围绕家居照明行业整理公开年报与渠道资料，按产品类别比较收入结构和销售方式，建立带来源链接的资料索引。","short":"整理家居照明行业公开资料，比较收入结构与销售方式。"},{"id":"f2","label":"财务核对","text":"统一样本公司的收入、毛利率和存货周转口径，标记会计年度与披露单位差异；使用 Excel 维护可比指标表并复核异常变化。","short":"统一财务指标口径，使用 Excel 维护可比表并复核异常变化。"},{"id":"f3","label":"简报支持","text":"将资料更新整理为每周行业简报，区分原始披露、计算结果与待核实信息，协助准备后续访谈需要确认的问题。","short":"整理每周行业简报，区分披露与计算结果，准备待核实问题。"}]},{"id":"contest","name":"社区便利店经营沙盘赛","role":"财务分析成员","section":"比赛经历","date":"2022.11 — 2023.01","source":"示例经营沙盘.pdf","scores":[66,85,53],"tags":["数据分析","商业分析","策略"],"reason":"成本预算 · 经营取舍","points":[{"id":"b1","label":"经营测算","text":"使用比赛提供的模拟数据建立进货、库存与人工成本表，比较不同补货频次下的资金占用和缺货情况，为经营方案提供测算依据。","short":"基于模拟数据测算库存、人工成本与资金占用，比较补货方案。"},{"id":"b2","label":"方案汇报","text":"对租金变化和客流波动开展敏感性分析，说明各方案的收益条件与主要风险，在决赛展示中解释预算假设和选择理由。","short":"分析租金与客流变化的影响，说明预算假设、收益条件与风险。"}]},{"id":"research","name":"城市客流预测课题","role":"课题助理","section":"学术经历","date":"2023.10 — 2024.01","source":"示例课程与课题.pdf","scores":[20,10,98],"tags":["算法","模型","实验"],"reason":"时间序列 · 误差分析","points":[{"id":"s1","label":"数据准备","text":"使用公开的小时级客流样本，按时间顺序划分训练与验证区间；检查缺失时段、节假日标记和异常计数，记录各项处理规则。","short":"整理公开客流样本，检查缺失时段与异常计数，按时间划分数据。"},{"id":"s2","label":"模型比较","text":"对比移动平均和梯度提升模型在工作日与周末的预测表现，统一评估窗口与误差指标，保存每轮实验使用的参数和特征。","short":"比较移动平均与梯度提升模型，统一评估窗口并保存实验参数。"},{"id":"s3","label":"结果复核","text":"按高峰时段、天气变化与节假日检查较大误差，绘制预测曲线和残差图，协助整理课题报告的实验过程与局限。","short":"按时段和节假日复核误差，绘制残差图并整理实验局限。"}]}];
+const legacySampleRecords=[{"id":"intern","name":"森屿生活（虚构）","role":"产品实习生","section":"实习经历","date":"2024.03 — 2024.06","source":"示例实习记录.pdf","scores":[96,20,42],"tags":["用户研究","需求分析","产品设计"],"reason":"履约流程 · 需求分析 · 体验验证","points":[{"id":"i1","group":"到店自提流程","label":"需求调研","text":"走访 8 家社区门店，记录店员核销订单与处理缺货的操作过程；整理顾客取货时的等待与沟通问题，绘制从下单到提货的服务流程。","short":"走访 8 家社区门店，梳理订单核销、缺货处理与提货等待问题。"},{"id":"i2","group":"到店自提流程","label":"流程设计","text":"为预约提货设计时段选择、订单确认和到店提醒页面，补齐迟到、取消与部分缺货的异常状态；通过纸面原型与店员一起核对操作顺序。","short":"设计时段选择、订单确认和到店提醒页面，补齐取消与缺货状态。"},{"id":"i3","group":"到店自提流程","label":"数据核对","text":"用 SQL 汇总不同时段的核销记录，对比工作日与周末的到店分布；逐项核对异常订单，整理影响顾客等待时间的因素。","short":"用 SQL 汇总核销记录，比较到店时段分布并排查异常订单。"},{"id":"i4","group":"门店试用回访","label":"试用反馈","text":"编制 24 条操作任务，邀请店员试用订单处理页面，记录误触位置、重复操作与不清楚的状态提示，形成按影响程度排序的修改清单。","short":"编制 24 条试用任务，记录误触与重复操作，形成修改清单。"},{"id":"i5","group":"门店试用回访","label":"交付跟进","text":"按页面状态核对试用版本，对照问题清单复测修改结果；汇总门店反馈与仍需观察的问题，更新交接记录和操作指引。","short":"复测试用版本，汇总门店反馈并更新交接记录与操作指引。"}]},{"id":"agent","name":"社区维修预约助手","role":"课程实践","section":"个人项目","date":"2024.09 — 2024.12","source":"示例项目说明.docx","scores":[91,16,87],"tags":["AI产品","Agent","评测"],"reason":"服务流程 · 对话设计 · 边界处理","points":[{"id":"a1","label":"场景拆解","text":"围绕住户报修的信息遗漏问题，拆分故障描述、地址核对、时间选择与人工确认四个步骤；将无法判断的故障留给服务人员处理。","short":"拆分故障描述、地址核对与预约确认步骤，为不确定情况设置人工处理入口。"},{"id":"a2","label":"Agent 原型","text":"搭建多轮预约对话原型，按规则检查地址和时间字段；调用模拟排班表展示可预约时段，在提交前请住户确认完整工单。","short":"搭建预约对话原型，检查关键字段、查询模拟排班并确认工单。"},{"id":"a3","label":"流程评估","text":"设计重复报修、地址缺失和临时改约等 36 种测试情境，记录对话能否正确补问、保留已有信息并进入合适的处理分支。","short":"用 36 种测试情境检查补问、信息保留和异常分支处理。"}]},{"id":"campus","name":"场馆预约小程序","role":"交互设计课程","section":"个人项目","date":"2023.10 — 2023.12","source":"示例课程与课题.pdf","scores":[82,24,48],"tags":["用户研究","原型","产品设计"],"reason":"预约体验 · 状态反馈","points":[{"id":"c1","label":"问题梳理","text":"访谈场馆管理员和使用者，整理可用时段难查、预约规则分散与临时取消不便的问题，确定时段日历和预约记录为核心页面。","short":"整理时段查询、规则查阅与取消预约问题，确定日历和预约记录页面。"},{"id":"c2","label":"交互原型","text":"完成日期切换、场地选择和预约确认的连贯原型；区分可预约、已约满与维护中的状态，并在取消操作后展示即时反馈。","short":"完成场地预约原型，区分可预约、约满与维护状态。"},{"id":"c3","label":"可用性验证","text":"邀请 6 位同学完成预约与取消任务，根据操作记录调整时间选择方式和规则提示的位置，保留修改前后的任务完成记录。","short":"邀请 6 位同学试用，根据任务记录调整时间选择与规则提示。"}]},{"id":"rag","name":"设备说明书检索工具","role":"学习项目","section":"个人项目","date":"2024.01 — 2024.02","source":"示例项目说明.docx","scores":[73,35,95],"tags":["检索","RAG","知识库"],"reason":"文档结构 · 检索验证","points":[{"id":"r1","label":"资料整理","text":"选取公开的家用设备说明书，按型号、操作步骤与故障代码整理段落，为每段保留文档标题和章节位置，方便核对原始说明。","short":"按型号、操作步骤与故障代码整理说明书，并保留章节位置。"},{"id":"r2","label":"检索实现","text":"组合关键词匹配与语义检索，比较型号过滤前后的召回结果；对相似型号混淆和操作步骤缺失的问题建立可复查的错误记录。","short":"组合关键词与语义检索，比较型号过滤效果并记录召回错误。"},{"id":"r3","label":"答案校验","text":"编写 48 个操作与故障查询问题，逐一核对返回段落能否支持回答；当资料不足时标注缺失信息，避免把相近型号的步骤混用。","short":"用 48 个问题核对回答依据，标注资料不足并排查型号混用。"}]},{"id":"finance","name":"岚桥咨询（虚构）","role":"产业研究助理","section":"实习经历","date":"2023.07 — 2023.09","source":"示例实习记录.pdf","scores":[31,98,25],"tags":["金融","研究","数据分析"],"reason":"产业资料 · 财务口径","points":[{"id":"f1","label":"市场资料","text":"围绕家居照明行业整理公开年报与渠道资料，按产品类别比较收入结构和销售方式，建立带来源链接的资料索引。","short":"整理家居照明行业公开资料，比较收入结构与销售方式。"},{"id":"f2","label":"财务核对","text":"统一样本公司的收入、毛利率和存货周转口径，标记会计年度与披露单位差异；使用 Excel 维护可比指标表并复核异常变化。","short":"统一财务指标口径，使用 Excel 维护可比表并复核异常变化。"},{"id":"f3","label":"简报支持","text":"将资料更新整理为每周行业简报，区分原始披露、计算结果与待核实信息，协助准备后续访谈需要确认的问题。","short":"整理每周行业简报，区分披露与计算结果，准备待核实问题。"}]},{"id":"contest","name":"社区便利店经营沙盘赛","role":"财务分析成员","section":"比赛经历","date":"2022.11 — 2023.01","source":"示例经营沙盘.pdf","scores":[66,85,53],"tags":["数据分析","商业分析","策略"],"reason":"成本预算 · 经营取舍","points":[{"id":"b1","label":"经营测算","text":"使用比赛提供的模拟数据建立进货、库存与人工成本表，比较不同补货频次下的资金占用和缺货情况，为经营方案提供测算依据。","short":"基于模拟数据测算库存、人工成本与资金占用，比较补货方案。"},{"id":"b2","label":"方案汇报","text":"对租金变化和客流波动开展敏感性分析，说明各方案的收益条件与主要风险，在决赛展示中解释预算假设和选择理由。","short":"分析租金与客流变化的影响，说明预算假设、收益条件与风险。"}]},{"id":"research","name":"城市客流预测课题","role":"课题助理","section":"学术经历","date":"2023.10 — 2024.01","source":"示例课程与课题.pdf","scores":[20,10,98],"tags":["算法","模型","实验"],"reason":"时间序列 · 误差分析","points":[{"id":"s1","label":"数据准备","text":"使用公开的小时级客流样本，按时间顺序划分训练与验证区间；检查缺失时段、节假日标记和异常计数，记录各项处理规则。","short":"整理公开客流样本，检查缺失时段与异常计数，按时间划分数据。"},{"id":"s2","label":"模型比较","text":"对比移动平均和梯度提升模型在工作日与周末的预测表现，统一评估窗口与误差指标，保存每轮实验使用的参数和特征。","short":"比较移动平均与梯度提升模型，统一评估窗口并保存实验参数。"},{"id":"s3","label":"结果复核","text":"按高峰时段、天气变化与节假日检查较大误差，绘制预测曲线和残差图，协助整理课题报告的实验过程与局限。","short":"按时段和节假日复核误差，绘制残差图并整理实验局限。"}]}];
+
+const sampleRecords = [
+  {
+    id: 'sample-product-intern', name: '禾沐到家（虚构）', role: '产品实习生',
+    section: '实习经历', date: '2024.06 — 2024.09', source: '示例实习记录.pdf',
+    tags: ['用户研究', '需求分析', '产品设计'], reason: '售后流程 · 需求优先级 · 试点验证',
+    points: [
+      {
+        id: 'sample-product-intern-1', label: '用户研究',
+        text: '访谈 12 位生鲜到家用户和 5 位客服，归纳退款进度难查、凭证重复提交等问题，绘制售后服务流程并按影响范围排序。',
+        short: '访谈 12 位用户和 5 位客服，梳理售后流程并给退款痛点排序。'
+      },
+      {
+        id: 'sample-product-intern-2', label: '产品设计',
+        text: '用 Figma 设计上传凭证、退款进度和异常提醒三个页面，编写产品需求文档，和客服及研发逐项核对状态流转与验收条件。',
+        short: '设计凭证、退款进度和异常提醒页面，编写需求及验收条件。'
+      },
+      {
+        id: 'sample-product-intern-3', label: '试点验证',
+        text: '为试点补充提交成功率和进度查询次数埋点，用 SQL 核对两周记录，发现凭证上传页流失较高并提交修改建议。',
+        short: '用 SQL 核对试点埋点，定位凭证上传页流失并提出修改建议。'
+      }
+    ]
+  },
+  {
+    id: 'sample-product-repair', name: '家电报修预约小程序', role: '课程项目产品负责人',
+    section: '个人项目', date: '2024.10 — 2024.12', source: '示例项目说明.docx',
+    tags: ['需求调研', '交互原型', '可用性测试'], reason: '预约流程 · 多轮对话 · 可用性测试',
+    points: [
+      {
+        id: 'sample-product-repair-1', label: '需求拆解',
+        text: '访谈 8 位潜在用户和 3 位维修人员，将家电报修拆成故障描述、时段预约和工单确认，依据频率和影响确定首版范围。',
+        short: '访谈用户和维修人员，拆解报修任务并确定首版功能范围。'
+      },
+      {
+        id: 'sample-product-repair-2', label: '交互原型',
+        text: '用 Figma 制作预约与改约原型，设计 Agent 多轮对话的补问、人工转接和提交前确认规则，并用模拟排班表验证流程。',
+        short: '制作预约原型，设计 Agent 补问、人工转接和工单确认规则。'
+      },
+      {
+        id: 'sample-product-repair-3', label: '可用性测试',
+        text: '组织 8 位同学完成预约和改约任务，另用 24 个异常情境检查对话分支，根据观察记录修改确认页和改约入口。',
+        short: '组织预约和改约试用，覆盖 24 个异常情境并改进交互。'
+      }
+    ]
+  },
+  {
+    id: 'sample-banking-intern', name: '澄远证券（虚构）', role: '投资银行实习生',
+    section: '实习经历', date: '2024.01 — 2024.04', source: '示例实习记录.pdf',
+    tags: ['尽职调查', '财务分析', '行业研究'], reason: 'IPO 尽调 · 底稿核对 · 风险分析',
+    points: [
+      {
+        id: 'sample-banking-intern-1', label: '财务尽调',
+        text: '协助工业零部件企业 IPO 尽职调查，用 Excel 核对三年审计报表、收入明细和主要客户合同，将确认时点差异记录到底稿。',
+        short: '协助 IPO 财务尽调，核对三年收入记录和主要客户合同。'
+      },
+      {
+        id: 'sample-banking-intern-2', label: '风险分析',
+        text: '计算前五大客户收入占比和应收账款周转天数，比较报告期变动，并整理需向公司财务负责人确认的问题。',
+        short: '分析客户集中度和应收账款周转，整理尽调待核实问题。'
+      },
+      {
+        id: 'sample-banking-intern-3', label: '可比公司分析',
+        text: '汇总 6 家上市可比公司的年报披露，统一收入和毛利率口径，保留数据出处并编制供项目组复核的行业对照表。',
+        short: '统一 6 家可比公司的年报指标口径，编制带来源的行业对照表。'
+      }
+    ]
+  },
+  {
+    id: 'sample-banking-valuation', name: '工业自动化企业并购估值', role: '金融课程项目成员',
+    section: '个人项目', date: '2024.09 — 2024.12', source: '示例项目说明.docx',
+    tags: ['并购', '财务模型', '估值'], reason: 'DCF · 可比公司法 · 敏感性分析',
+    points: [
+      {
+        id: 'sample-banking-valuation-1', label: '财务建模',
+        text: '用公开年报整理标的企业三年历史财务数据，在 Excel 搭建五年预测模型，联动营收、利润率、营运资本和资本开支。',
+        short: '基于公开年报搭建五年财务预测，联动营收、成本及营运资本。'
+      },
+      {
+        id: 'sample-banking-valuation-2', label: '并购估值',
+        text: '用 DCF 估算企业价值，并用 5 家可比公司的 EV/EBITDA 倍数交叉核验，解释两种估值区间的差异。',
+        short: '用 DCF 和可比公司 EV/EBITDA 倍数估值，核对估值区间。'
+      },
+      {
+        id: 'sample-banking-valuation-3', label: '敏感性分析',
+        text: '对 WACC 和永续增长率做双变量敏感性分析，补充基准、乐观及下行情景，整理主要假设和并购定价风险。',
+        short: '对 WACC 和永续增长率做敏感性分析，说明并购定价风险。'
+      }
+    ]
+  },
+  {
+    id: 'sample-algorithm-intern', name: '星垒数据（虚构）', role: '算法实习生',
+    section: '实习经历', date: '2024.06 — 2024.09', source: '示例实习记录.pdf',
+    tags: ['机器学习', 'Python', '时间序列'], reason: '时间序列预测 · 模型训练 · 批量推理',
+    points: [
+      {
+        id: 'sample-algorithm-intern-1', label: '特征工程',
+        text: '用 Python 清洗 18 个月的小时级客服工单，构建滞后量、滚动均值与节假日特征，按时间切分训练和验证窗口，避免数据泄漏。',
+        short: '用 Python 构建时序特征，并按时间划分训练验证窗口。'
+      },
+      {
+        id: 'sample-algorithm-intern-2', label: '模型评估',
+        text: '比较季节性基线和 LightGBM，在同一时间验证集上将 WAPE 从 18.6% 降至 14.2%，并按高峰时段复核误差。',
+        short: '在同一验证集上用 LightGBM 将 WAPE 从 18.6% 降至 14.2%。'
+      },
+      {
+        id: 'sample-algorithm-intern-3', label: '批量推理',
+        text: '把特征与模型推理封装为每日批处理脚本，记录输入版本和预测结果，添加缺失特征检查并用历史数据回放验证。',
+        short: '封装每日批量推理脚本，加入数据检查并完成历史回放。'
+      }
+    ]
+  },
+  {
+    id: 'sample-algorithm-retrieval', name: '家电维修说明书检索评测', role: '机器学习课程项目成员',
+    section: '个人项目', date: '2024.10 — 2024.12', source: '示例项目说明.docx',
+    tags: ['RAG', '语义检索', '评测'], reason: '混合检索 · 重排序 · 答案依据',
+    points: [
+      {
+        id: 'sample-algorithm-retrieval-1', label: '检索数据集',
+        text: '将 30 份公开家电说明书按型号和章节切分，人工构建 120 条维修查询及证据标注，其中包含易混型号和缺失信息问题。',
+        short: '切分 30 份公开说明书，标注 120 条含易混型号的查询及证据。'
+      },
+      {
+        id: 'sample-algorithm-retrieval-2', label: '召回与重排',
+        text: '在 Python 中实现 BM25 与向量混合检索，加入型号过滤和候选重排序，在固定评测集将 Recall@5 从 72% 提升到 86%。',
+        short: '实现混合检索与重排序，将固定评测集 Recall@5 从 72% 提升到 86%。'
+      },
+      {
+        id: 'sample-algorithm-retrieval-3', label: '回答校验',
+        text: '为 RAG 原型输出说明书章节引用，逐条核对答案依据，归类型号混淆和无依据回答，并添加证据不足时的回退提示。',
+        short: '核对 RAG 答案的章节引用，对证据不足的查询给出回退提示。'
+      }
+    ]
+  }
+];
+// Existing drafts store sample IDs instead of full copies of unchanged sample records.
+const samplesById = new Map(
+  [...legacySampleRecords, ...sampleRecords].map(record => [record.id, record])
+);
 
 const fileObjects=new Map(),audioObjects=new Map(),filePictureUrls=new Map();
 const assistant = window.CareerCraftAssistant;
@@ -23,8 +162,23 @@ let flow = resetFields();
 let voice = null, voiceTimer = null, exportBytes = null, flowBusy = false, generation = null, modelService = null;
 const flowSteps = [['intake', '资料录入'], ['review', '经历库'], ['direction', '求职方向'], ['editor', '简历']];
 const uid=p=>p+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
-function packedFlow(){const f=clone(flow);f.records=f.records.map(c=>{const sample=data.find(s=>s.id===c.id);return sample&&JSON.stringify(c)===JSON.stringify(sample)?{sampleId:c.id}:c});return f}
-function unpackFlow(f){const copy=clone(f);copy.records=(copy.records||[]).map(c=>c.sampleId?clone(data.find(s=>s.id===c.sampleId)):c).filter(Boolean);return copy}
+function packedFlow() {
+  const saved = clone(flow);
+  saved.records = saved.records.map(record => {
+    const sample = samplesById.get(record.id);
+    return sample && JSON.stringify(record) === JSON.stringify(sample) ? { sampleId: record.id } : record;
+  });
+  return saved;
+}
+function unpackFlow(saved) {
+  const restored = clone(saved);
+  restored.records = (restored.records || []).flatMap(record => {
+    if (!record.sampleId) return [record];
+    const sample = samplesById.get(record.sampleId);
+    return sample ? [clone(sample)] : [];
+  });
+  return restored;
+}
 function flowHeader() {
   return `<header class="ff-header">
     <div class="cc-brand"><span class="cc-logo" aria-hidden="true">C</span>CareerCraft<span class="cc-demo">求职工作台</span></div>
@@ -51,7 +205,22 @@ function renderFlow(){
 function intakeHTML(){return `<div class="ff-heading"><div><h1>${flow.generated?'继续丰富你的经历':'从你的经历开始'}</h1><p>整理教育、实习和项目经历，生成你的第一份一页简历。</p></div>${!all().length && !flow.files.length && !Object.values(flow.profile).some(Boolean) ? '<button type="button" class="cc-button cc-quiet" data-sample>试用示例资料</button>':''}</div><div class="ff-intake"><div><div class="ff-drop" data-drop>${icon('files')}<strong>把资料放在这里</strong><span class="cc-small">PDF、DOCX、图片、TXT、Markdown</span><span class="cc-small">${location.protocol === 'file:' ? '<a href="http://127.0.0.1:8787/">打开本地工作台</a>可自动识别 PDF 和图片' : '自动提取文字，整理成可核对的经历'}</span><button type="button" class="cc-button" data-upload>选择文件</button><input class="ff-file-input" type="file" multiple accept="${materialExtensions}" data-files aria-label="上传背景资料"></div><div class="ff-files">${flow.files.map(f=>`<div class="ff-file">${icon(f.kind==='audio'?'mic':f.kind==='image'?'image':'file-text')}<button type="button" class="ff-file-main" data-file="${f.id}"><strong>${esc(f.name)}</strong><span data-material-status="${f.id}">${esc(f.status)}</span></button><button type="button" class="cc-button cc-square" data-file-remove="${f.id}" aria-label="移除${esc(f.name)}">${icon('x')}</button></div>`).join('')}</div></div><div class="ff-chat"><div class="ff-chat-head"><span>聊聊你的经历</span><span class="cc-small">文字 / 语音</span></div><div class="ff-messages" aria-live="polite">${flow.messages.length?flow.messages.slice(-5).map(m=>`<div class="ff-bubble ${m.role==='user'?'user':''}">${m.voice?icon('audio-lines')+' ':''}${esc(m.text)}</div>`).join(''):'<div class="ff-chat-empty">最近做过什么？<br>从一段实习或项目说起。</div>'}</div>${flow.pending?'<div class="ff-skip"><button type="button" class="cc-button" data-skip-followup>暂时没有</button><button type="button" class="cc-button cc-quiet" data-new-story>聊下一段</button></div>':''}<div class="ff-compose"><textarea data-chat placeholder="写下来，或点击麦克风" aria-label="输入经历">${esc(flow.chatDraft)}</textarea><div class="ff-compose-bar"><button type="button" class="cc-button cc-quiet" data-voice>${icon('mic')}语音输入</button><button type="button" class="cc-button cc-main" data-chat-send aria-label="发送经历">发送</button></div></div></div></div><div class="ff-footer"><span class="cc-small">${all().length?`${all().length} 段经历`:'草稿仅保存在当前浏览器'}</span><button type="button" class="cc-button" data-record-new>手动添加</button><button type="button" class="cc-button cc-main" data-organize >${all().length || flow.files.length ? '查看整理结果' : '填写个人信息'}</button></div>`}
 function reviewHTML(){return `<div class="ff-heading"><div><h1>这是你的经历</h1><p>${flow.sample?'当前资料中包含虚构示例，请在投递前替换。':'确认内容，之后随时可以补充。'}</p></div><button type="button" class="cc-button" data-voice>${icon('mic')}语音补充</button></div><section class="ff-profile"><h2>个人信息</h2><div class="ff-form-grid">${[['name','姓名','你的姓名'],['phone','手机','选填'],['email','邮箱','选填']].map(([key,label,placeholder])=>`<label class="cc-field ${key==='email'?'ff-full':''}"><span>${label}</span><input class="cc-input" data-profile="${key}" value="${esc(flow.profile[key])}" placeholder="${placeholder}"></label>`).join('')}<label class="cc-field ff-full"><span>教育背景</span><textarea class="cc-input" data-profile="education" rows="2" placeholder="学校、专业、学位、起止时间">${esc(flow.profile.education)}</textarea></label><label class="cc-field ff-full"><span>技能</span><textarea class="cc-input" data-profile="skills" rows="2" placeholder="语言、工具、专业技能">${esc(flow.profile.skills)}</textarea></label></div></section><div class="ff-records">${all().map(c=>`<div class="ff-record"><span class="ff-record-icon">${icon(c.section==='实习经历'?'briefcase-business':c.section==='学术经历'?'graduation-cap':'layers')}</span><div class="ff-record-info"><strong>${esc(c.name)}</strong><span>${esc(c.section)} · ${c.points.length} 个要点${c.date?' · '+esc(c.date):''}</span></div><button type="button" class="cc-button cc-quiet" data-record-edit="${c.id}">编辑</button>${flow.generated ? `<button type="button" class="cc-button cc-quiet" data-ca-locate="${c.id}">在简历中查看</button>` : ''}</div>`).join('')||'<div class="ff-empty">资料已添加。补充文字或语音，整理成经历。</div>'}</div>${flow.files.some(f=>f.needsText && !f.reading)?'<p class="ff-review-note">有材料尚未读出内容。在「资料录入」可查看识别状态或补充文字。</p>':''}<div class="ff-gap-list"><button type="button" class="ff-gap" data-record-new>${icon('plus')}添加经历</button></div><div class="ff-footer"><button type="button" class="cc-button" data-stage="intake">返回资料</button><button type="button" class="cc-button cc-main" data-review-next ${canBuildResume() ? '' : 'disabled'}>确认并继续</button></div>`}
 function directionHTML(){return `<div class="ff-heading"><div><h1>想投递哪类岗位？</h1><p>先生成一份通用简历。</p></div></div><div class="ff-directions">${[['产品经理','panels-top-left','用户 · 产品 · 数据'],['投行','chart-no-axes-combined','财务 · 研究 · 分析'],['算法','network','模型 · 实验 · 工程']].map(([name,ico,sub])=>`<button type="button" class="ff-direction" data-direction="${name}" aria-pressed="${(flow.targetRole || state.role) === name}">${icon(ico)}<strong>${name === '投行' ? '投资银行分析师' : name === '算法' ? '算法工程师' : name}</strong><span>${sub}</span></button>`).join('')}</div><label class="cc-field ff-target"><span>想特别突出什么？</span><input class="cc-input" data-emphasis placeholder="选填，例如 AI 产品、金融科技" value="${esc(flow.emphasis)}"></label><div class="ff-footer"><button type="button" class="cc-button" data-stage="review">返回经历</button><button type="button" class="cc-button cc-main" data-generate-base>生成通用简历</button></div>`}
-function useSample(){flow.sample=true;flow.files=[...new Set(data.map(c=>c.source))].map((name,i)=>({id:'sample'+i,name,status:'虚构示例 · 已整理',kind:'document'}));flow.records=clone(data);flow.profile={name:'陈安禾',phone:'000 0000 0000',email:'candidate@example.com',education:'青禾大学（虚构） · 信息管理 · 硕士 · 2023.09 — 2025.06\n南川学院（虚构） · 统计学 · 本科 · 2019.09 — 2023.06',skills:'工具：Figma、Excel、SQL；Python 数据处理。\n方法：服务流程梳理、可用性测试、基础统计分析。'};flow.messages=[{role:'assistant',text:'已整理出 7 段经历。还有其他想补充的吗？'}];flow.pending=null;render(false);save()}
+function useSample() {
+  flow.sample = true;
+  flow.files = [...new Set(sampleRecords.map(record => record.source))].map((name, index) => ({
+    id: 'sample' + index, name, status: '虚构示例 · 已整理', kind: 'document'
+  }));
+  flow.records = clone(sampleRecords);
+  flow.profile = {
+    name: '陈安禾', phone: '000 0000 0000', email: 'candidate@example.com',
+    education: '青禾大学（虚构） · 信息管理 · 硕士 · 2023.09 — 2025.06\n南川学院（虚构） · 统计学 · 本科 · 2019.09 — 2023.06',
+    skills: '工具：Figma、Excel、SQL、Python。\n方法：用户研究、财务建模、机器学习模型评估。'
+  };
+  flow.messages = [{ role: 'assistant', text: `已整理出 ${flow.records.length} 段经历。还有其他想补充的吗？` }];
+  flow.pending = null;
+  render(false);
+  save();
+}
 function createRecord(text, source, extra = {}) {
   const id = uid('exp');
   const original = text.trim();

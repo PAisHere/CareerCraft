@@ -92,12 +92,15 @@ function json(response, status, data) {
   response.end(JSON.stringify(data));
 }
 
+// The supported 100 experience points and 80 JD lines can approach 1 MiB after JSON escaping.
+const maxPlanBodyBytes = 1024 * 1024;
+
 async function readJson(request) {
   let size = 0;
   const chunks = [];
-  for await (const chunk of request) {
+  for await (const chunk of request.iterator({ destroyOnReturn: false })) {
     size += chunk.length;
-    if (size > 160_000) throw new Error('Payload too large');
+    if (size > maxPlanBodyBytes) throw new RangeError('Planning request body exceeds limit');
     chunks.push(chunk);
   }
   return JSON.parse(Buffer.concat(chunks).toString('utf8'));
@@ -151,7 +154,13 @@ async function generatePlan(request, response, expectedOrigin) {
   }
   let input;
   try { input = sanitizeInput(await readJson(request)); }
-  catch { return json(response, 400, { error: 'Invalid planning input' }); }
+  catch (error) {
+    if (error instanceof RangeError) {
+      request.resume();
+      return json(response, 413, { error: 'Planning request body exceeds limit' });
+    }
+    return json(response, 400, { error: 'Invalid planning input' });
+  }
 
   try {
     const upstream = await fetch(endpoint, {
